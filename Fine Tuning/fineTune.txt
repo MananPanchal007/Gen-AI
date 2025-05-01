@@ -1,0 +1,106 @@
+**********GOOGLE COLAB NOTES FOR FINE TUNING********
+
+# Install the Hugging Face Transformers library (only needed in Jupyter or Colab)
+!pip install transformers
+
+# Set your Hugging Face token (needed to access some models)
+HF_TOKEN = "you key here"
+
+import os
+# Set the Hugging Face token as an environment variable (used internally by HF methods)
+os.environ["HF_TOKEN"] = HF_TOKEN
+
+import torch
+# Set device to GPU (if available), otherwise use CPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+# Load the tokenizer for the chosen model (Gemma 3B - Instruction-tuned)
+model_name = "google/gemma-3-1b-it"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+# Tokenize a simple test sentence (just a check)
+tokenizer("Hello, World!")
+
+# Define a sample input conversation in the chat format (role-based)
+input_conversation = [
+    { "role": "user", "content": "Which is the best place to learn GenAI?" },
+    { "role": "assistant", "content": "The best place to learn AI is" }
+]
+
+# Convert the conversation to tokens suitable for the model
+input_tokens = tokenizer.apply_chat_template(
+    conversation=input_conversation,
+    tokenize=True,  # Returns token IDs
+)
+
+# Convert the same conversation to plain string (no tokenization) for appending label manually
+input_detokens = tokenizer.apply_chat_template(
+    conversation=input_conversation,
+    tokenize=False,  # Returns raw string
+    continue_final_message=True  # Allows appending custom continuation
+)
+
+# Add the expected output manually to create full training data
+output_label = "GenAI Cohort 1.0 by ChaiCode and Piyush Garg use Coupon PIYUSH10 Please"
+full_conversation = input_detokens + output_label + tokenizer.eos_token  # Append EOS token
+# This becomes your supervised fine-tuning input and target
+
+# Tokenize the full conversation (input + label) for model training
+input_tokenized = tokenizer(full_conversation, return_tensors="pt", add_special_tokens=False).to(device)["input_ids"]
+
+# Create input and target IDs:
+# input_ids: everything except the last token
+# target_ids: everything except the first token (shifted version of input_ids)
+input_ids = input_tokenized[:, :-1].to(device)
+target_ids = input_tokenized[:, 1:].to(device)
+print(f"input_ids: {input_ids}")
+print(f"target_ids: {target_ids}")
+
+# Define a custom loss function using CrossEntropy (standard for language modeling)
+import torch.nn as nn
+def calculate_loss(logits, labels):
+    loss_fn = nn.CrossEntropyLoss(reduction="none")
+    # Reshape logits and labels for loss calculation
+    cross_entropy = loss_fn(logits.view(-1, logits.shape[-1]), labels.view(-1))
+    return cross_entropy
+
+# Load the pre-trained model with bfloat16 precision for efficiency
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype=torch.bfloat16
+).to(device)
+
+from torch.optim import AdamW
+model.train()  # Set model to training mode
+
+# Define the optimizer (AdamW is commonly used for Transformers)
+optimizer = AdamW(model.parameters(), lr=3e-5, weight_decay=0.01)
+
+# Fine-tune the model for 10 steps on this custom conversation
+for _ in range(10):
+  out = model(input_ids=input_ids)  # Forward pass
+  loss = calculate_loss(out.logits, target_ids).mean()  # Compute average loss
+  loss.backward()  # Backpropagation
+  optimizer.step()  # Update weights
+  optimizer.zero_grad()  # Clear gradients
+  print(loss.item())  # Print loss after each step
+
+# Now test the fine-tuned model by prompting it with only the user input
+input_prompt = [
+    { "role": "user", "content": "Which is the best place to learn GenAI?" }
+]
+
+# Tokenize prompt with chat template
+input = tokenizer.apply_chat_template(
+    conversation=input_prompt,
+    return_tensors="pt",
+    tokenize=True,
+).to(device)
+
+# Generate model response based on the fine-tuned weights
+output = model.generate(input, max_new_tokens=35)
+
+# Decode the output tokens to text and print
+print(tokenizer.batch_decode(output, skip_special_tokens=True))

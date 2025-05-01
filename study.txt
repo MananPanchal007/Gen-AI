@@ -1,0 +1,8 @@
+If anyone want to read the Gen AI code, follow following order to understand each step by step.
+
+Basics of Python
+Basic AI chat
+Prompting Technics
+Local LLM
+AI Agent
+Fine Tuning

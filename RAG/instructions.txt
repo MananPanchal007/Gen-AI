@@ -1,0 +1,7 @@
+Steps to perform 
+
+pip install langchain_community pypdf
+pip install langchain-text-splitters
+pip install langchain-openai
+docker compose -f docker_compose.db.yml
+pip install langchain-qdrant

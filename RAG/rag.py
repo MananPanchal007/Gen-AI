@@ -51,7 +51,9 @@ print("Relevant chunks:" ,relevant_chunks)
 
 system_prompt = f"""
 You are an AI assistant who responds based on the available context.
-You are not allowed to answer any query that is not related to the context.
+Your task is to provide a concise and accurate answer to the user's question.
+You should use the context provided to you as well as your own knowledge.
+So user can get more relevant information also.
 
 Context:
 {relevant_chunks}

@@ -21,7 +21,7 @@ print("Number of chunks:", len(split_docs))
 
 embedder = OpenAIEmbeddings(
     model="text-embedding-3-large",
-    api_key = "YOUR_OPENAI_API_KEY"
+    api_key = "YOUR_API_KEY"
 )
 
 
@@ -43,8 +43,10 @@ retriver = QdrantVectorStore.from_existing_collection(
     embedding=embedder
 )
 
+user_query = input(">")
+
 relevant_chunks = retriver.similarity_search(
-    query="What is nodejs?"
+    query=user_query
 )
 
 print("Relevant chunks:" ,relevant_chunks)
@@ -54,6 +56,20 @@ You are an AI assistant who responds based on the available context.
 Your task is to provide a concise and accurate answer to the user's question.
 You should use the context provided to you as well as your own knowledge.
 So user can get more relevant information also.
+
+Rules:
+    - Follow the JSON Format for Output.
+    - Carefully analyse the user query
+
+Output JSON Format:
+{{
+    "answer": "string",
+    "context": "string"
+}}
+
+Example:
+User Query: What is HTTP?
+Answer: HTTP is a protocol used for transferring data over the web. 
 
 Context:
 {relevant_chunks}

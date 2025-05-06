@@ -39,7 +39,6 @@ messages = [
     { "role": "system", "content": system_prompt },
 ]
 
-
 query = input("> ")
 messages.append({ "role": "user", "content": query })
 
@@ -54,9 +53,17 @@ while True:
     parsed_response = json.loads(response.choices[0].message.content)
     messages.append({ "role": "assistant", "content": json.dumps(parsed_response) })
 
-    if parsed_response.get("step") != "output":
-        print(f"🧠: {parsed_response.get("content")}")
-        continue    
-    
-    print(f"🤖: {parsed_response.get("content")}")
-    break
+    parsed_response = json.loads(response.choices[0].message.content)
+    step = parsed_response.get("step")
+    content = parsed_response.get("content")
+
+    # Print output based on the step
+    if step in ["analyse", "think", "validate"]:
+        print(f"🧠: {content}")
+    elif step == "output":
+        print(f"🤖: {content}")
+    elif step == "result":
+        print(f"✅ Final Result: {content}")
+        break
+
+    messages.append({ "role": "assistant", "content": json.dumps(parsed_response) })

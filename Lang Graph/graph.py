@@ -66,7 +66,7 @@ def solve_coding_question(state: State):
 
     SYSTEM_PROMPT = """
     You are an AI assistant. Your job is to resolve the user query based on coding 
-    problem he is facing
+    problem he is facing.
     """
 
     result = client.beta.chat.completions.parse(
@@ -86,7 +86,7 @@ def solve_simple_question(state: State):
     user_message = state.get("user_message")
 
     SYSTEM_PROMPT = """
-    You are an AI assistant. Your job is to chat with user
+    You are an AI assistant. Your job is to chat with user.
     """
 
     result = client.beta.chat.completions.parse(

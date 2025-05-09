@@ -15,7 +15,6 @@ class CodingAIResponse(BaseModel):
 
 
 client = wrap_openai(OpenAI())
-
 from dotenv import load_dotenv
 
 load_dotenv()

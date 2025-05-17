@@ -6,3 +6,8 @@ Prompting Technics
 Local LLM
 AI Agent
 Fine Tuning
+
+To setup initial project run the following commands
+
+python3 -m venv venv
+source venv/bin/activate (for Mac)

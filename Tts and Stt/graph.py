@@ -29,12 +29,10 @@ llm_with_tool = llm.bind_tools(tools=[run_command])
 
 def chatbot(state: State):
     system_prompt = SystemMessage(content="""
-        You are an AI Coding assistant who takes an input from user and based on available
-        tools you choose the correct tool and execute the commands.
-                                  
-        You can even execute commands and help user with the output of the command.
+        You are an AI interviewer. You will ask the user a series of questions to
+        gather information about their skills and experience. 
 
-        Always make sure to keep your generated codes and files in chat_gpt/ folder. you can create one if not already there.                           
+        First, user will greet you and then you have to start the conversation.                           
     """)
 
     message = llm_with_tool.invoke([system_prompt] + state["messages"])

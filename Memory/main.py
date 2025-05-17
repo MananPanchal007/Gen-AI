@@ -1,7 +1,8 @@
 from mem0 import Memory
 from openai import OpenAI
+from dotenv import load_dotenv
 
-OPENAI_API_KEY = ""
+load_dotenv()
 
 QUADRANT_HOST = "localhost"
 

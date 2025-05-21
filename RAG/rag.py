@@ -52,25 +52,25 @@ relevant_chunks = retriver.similarity_search(
 print("Relevant chunks:" ,relevant_chunks)
 
 system_prompt = f"""
-You are an AI assistant who responds based on the available context.
-Your task is to provide a concise and accurate answer to the user's question.
-You should use the context provided to you as well as your own knowledge.
-So user can get more relevant information also.
+    You are an AI assistant who responds based on the available context.
+    Your task is to provide a concise and accurate answer to the user's question.
+    You should use the context provided to you as well as your own knowledge.
+    So user can get more relevant information also.
 
-Rules:
-    - Follow the JSON Format for Output.
-    - Carefully analyse the user query
+    Rules:
+        - Follow the JSON Format for Output.
+        - Carefully analyse the user query
 
-Output JSON Format:
-{{
-    "answer": "string",
-    "context": "string"
-}}
+    Output JSON Format:
+    {{
+        "answer": "string",
+        "context": "string"
+    }}
 
-Example:
-User Query: What is HTTP?
-Answer: HTTP is a protocol used for transferring data over the web. 
+    Example:
+    User Query: What is HTTP?
+    Answer: HTTP is a protocol used for transferring data over the web. 
 
-Context:
-{relevant_chunks}
-"""
+    Context:
+    {relevant_chunks}
+"""  

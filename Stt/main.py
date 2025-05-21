@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 import speech_recognition as sr
 from langgraph.checkpoint.mongodb import MongoDBSaver
 from graph import create_chat_graph
-
 from openai import AsyncOpenAI
 
 load_dotenv()
@@ -10,7 +9,7 @@ load_dotenv()
 openai = AsyncOpenAI()
 
 MONGODB_URI = "mongodb://admin:admin@localhost:27017"
-config = {"configurable": {"thread_id": "7"}}
+config = {"configurable": {"thread_id": "1"}}
 
 
 def main():

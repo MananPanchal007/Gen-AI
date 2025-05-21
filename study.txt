@@ -1,19 +1,4 @@
-If anyone want to read the Gen AI code, follow following order to understand each step by step.
-
-1 Basics of Python
-2 Basic AI chat
-3 Prompting Technics
-4 Local LLM
-5 AI Agent
-6 Fine Tuning
-7 RAG
-8 Advance RAG
-9 Memory
-10 Lang Graph
-11 Speach to Text
-
 To setup initial project run the following commands
 
 python3 -m venv venv
 source venv/bin/activate (for Mac)
-

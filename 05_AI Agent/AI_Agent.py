@@ -10,7 +10,7 @@ client = OpenAI()
 
 def run_command(command):
     result = os.system(command=command)
-    return result
+    return result  # what will this line do after os.system()?
 
 def get_weather(city: str):
     print("🔨 Tool Called: get_weather", city)
@@ -21,10 +21,6 @@ def get_weather(city: str):
     if response.status_code == 200:
         return f"The weather in {city} is {response.text}."
     return "Something went wrong"
-
-def add(x, y):
-    print("🔨 Tool Called: add", x, y)
-    return x + y
 
 avaiable_tools = {
     "get_weather": {
@@ -104,5 +100,3 @@ while True:
         if parsed_output.get("step") == "output":
             print(f"🤖: {parsed_output.get("content")}")
             break
-
-        

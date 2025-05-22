@@ -106,9 +106,9 @@ graph_builder = StateGraph(State)
 
 # Add nodes to the graph
 graph_builder.add_node("detect_query", detect_query)
+graph_builder.add_node("route_edge", route_edge)
 graph_builder.add_node("solve_coding_question", solve_coding_question)
 graph_builder.add_node("solve_simple_question", solve_simple_question)
-graph_builder.add_node("route_edge", route_edge)
 
 # Define edges (flow) between nodes
 graph_builder.add_edge(START, "detect_query")                      # start → detect

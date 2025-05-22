@@ -1,5 +1,4 @@
 import json
-
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -52,8 +51,8 @@ while True:
 
     parsed_response = json.loads(response.choices[0].message.content)
     messages.append({ "role": "assistant", "content": json.dumps(parsed_response) })
-
-    parsed_response = json.loads(response.choices[0].message.content)
+    
+    # Extract step and content from the parsed response
     step = parsed_response.get("step")
     content = parsed_response.get("content")
 

@@ -15,6 +15,7 @@ A comprehensive collection of resources, code, and tutorials for learning and ex
 - [09_Memory](#09_memory)
 - [10_Lang Graph](#10_lang-graph)
 - [11_Speach to Text](#11_speach-to-text)
+- [12_MyMCP](#12_mymcp)
 - [study.txt](#study.txt)
 
 ## Folder Descriptions
@@ -51,6 +52,9 @@ Exploring language graphs and their applications in AI. Contains examples of bui
 
 ### 11_Speach to Text
 Speech-to-text models and related experiments. Includes examples of speech recognition and integration with AI chat systems.
+
+### 12_MyMCP
+Implementation of a basic Model Context Protocol (MCP) server using FastMCP. Provides reusable tools for AI assistants including calculator, time operations, text processing, file operations, and list manipulations. Can be integrated with Claude Desktop and other MCP-compatible applications.
 
 ### study.txt
 Notes and study material related to the project. Contains setup instructions and additional resources.

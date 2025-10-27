@@ -1,3 +1,4 @@
+import asyncio
 from dotenv import load_dotenv
 import speech_recognition as sr
 from langgraph.checkpoint.mongodb import MongoDBSaver
@@ -9,10 +10,10 @@ load_dotenv()
 openai = AsyncOpenAI()
 
 MONGODB_URI = "mongodb://admin:admin@localhost:27017"
-config = {"configurable": {"thread_id": "1"}}
+config = {"configurable": {"thread_id": "2"}}
 
 
-def main():
+async def main():
     with MongoDBSaver.from_conn_string(MONGODB_URI) as checkpointer:
         graph = create_chat_graph(checkpointer=checkpointer)
 
@@ -30,9 +31,9 @@ def main():
                 sst = r.recognize_google(audio)
 
                 print("You Said:", sst)
-                for event in graph.stream({"messages": [{"role": "user", "content": sst}]}, config, stream_mode="values"):
+
+                async for event in graph.stream({"messages": [{"role": "user", "content": sst}]}, config, stream_mode="values"):
                     if "messages" in event:
-                        event["messages"][-1].pretty_print()
+                        print("AI:", event["messages"][-1]["content"])
 
-
-main()
+asyncio.run(main())
